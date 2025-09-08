@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Password Generator & Strength Checker - Free Secure Password Tool</title>
+    <meta name="description"
+        content="Generate strong passwords online and check their strength instantly. Free and easy-to-use password generator with copy feature, dark mode, and local storage.">
+    <meta name="keywords"
+        content="password generator, password strength checker, secure passwords, online password tool, random password">
+    <meta name="author" content="Password Generator Tool">
+
+    <!-- Open Graph Tags for Social Media -->
+    <meta property="og:title" content="Online Password Generator & Strength Checker">
+    <meta property="og:description"
+        content="Generate strong passwords online and check their strength instantly. Free and secure password generator tool.">
+    <meta property="og:type" content="website">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon"
+        href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzMzNjZmZiIvPgo8cGF0aCBkPSJNMTYgOEMxMi42ODYzIDggMTAgMTAuNjg2MyAxMCAxNFYxNkg5QzguNDQ3NzIgMTYgOCAxNi40NDc3IDggMTdWMjVDOCAyNS41NTIzIDguNDQ3NzIgMjYgOSAyNkgyM0MyMy41NTIzIDI2IDI0IDI1LjU1MjMgMjQgMjVWMTdDMjQgMTYuNDQ3NyAyMy41NTIzIDE2IDIzIDE2SDIyVjE0QzIyIDEwLjY4NjMgMTkuMzEzNyA4IDE2IDhaTTIwIDE2SDEyVjE0QzEyIDExLjc5MDkgMTMuNzkwOSAxMCAxNiAxMEMxOC4yMDkxIDEwIDIwIDExLjc5MDkgMjAgMTRWMTZaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🔐 Password Generator & Strength Checker</h1>
+                <p>Generate secure passwords and check their strength instantly</p>
+                <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+                    <span class="toggle-icon">🌙</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Password Generator Section -->
+            <section class="generator-section">
+                <div class="card">
+                    <h2>🎲 Password Generator</h2>
+
+                    <!-- Password Display -->
+                    <div class="password-display">
+                        <input type="text" id="generatedPassword" readonly
+                            placeholder="Your generated password will appear here" aria-label="Generated password">
+                        <div class="password-actions">
+                            <button id="copyButton" class="btn btn-primary" title="Copy to clipboard">
+                                <span class="btn-icon">📋</span>
+                                <span class="btn-text">Copy</span>
+                            </button>
+                            <button id="regenerateButton" class="btn btn-secondary" title="Generate new password">
+                                <span class="btn-icon">🔄</span>
+                                <span class="btn-text">Regenerate</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Password Options -->
+                    <div class="password-options">
+                        <h3>Customization Options</h3>
+
+                        <!-- Length Slider -->
+                        <div class="option-group">
+                            <label for="lengthSlider">Password Length: <span id="lengthValue">12</span></label>
+                            <input type="range" id="lengthSlider" min="4" max="128" value="12" class="slider">
+                        </div>
+
+                        <!-- Character Options -->
+                        <div class="checkbox-grid">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="includeUppercase" checked>
+                                <label for="includeUppercase">Uppercase (A-Z)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="includeLowercase" checked>
+                                <label for="includeLowercase">Lowercase (a-z)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="includeNumbers" checked>
+                                <label for="includeNumbers">Numbers (0-9)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="includeSymbols" checked>
+                                <label for="includeSymbols">Symbols (!@#$%)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="excludeSimilar">
+                                <label for="excludeSimilar">Exclude Similar (0,O,l,1)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="excludeAmbiguous">
+                                <label for="excludeAmbiguous">Exclude Ambiguous ({}<>)</label>
+                            </div>
+                        </div>
+
+                        <!-- Generate Button -->
+                        <button id="generateButton" class="btn btn-primary btn-large">
+                            <span class="btn-icon">⚡</span>
+                            <span class="btn-text">Generate Password</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Password Strength Checker Section -->
+            <section class="strength-section">
+                <div class="card">
+                    <h2>🛡️ Password Strength Checker</h2>
+
+                    <!-- Strength Input -->
+                    <div class="strength-input">
+                        <input type="password" id="strengthInput" placeholder="Type or paste password to check strength"
+                            aria-label="Password to check strength">
+                        <button id="toggleVisibility" class="visibility-toggle" title="Toggle password visibility">
+                            <span id="visibilityIcon">👁️</span>
+                        </button>
+                    </div>
+
+                    <!-- Strength Meter -->
+                    <div class="strength-meter">
+                        <div class="strength-bar">
+                            <div id="strengthProgress" class="strength-progress"></div>
+                        </div>
+                        <div class="strength-info">
+                            <span id="strengthLabel">Enter a password to check</span>
+                            <span id="strengthScore"></span>
+                        </div>
+                    </div>
+
+                    <!-- Strength Details -->
+                    <div class="strength-details">
+                        <div class="criteria-list">
+                            <div class="criterion" id="lengthCriterion">
+                                <span class="criterion-icon">❌</span>
+                                <span class="criterion-text">At least 8 characters</span>
+                            </div>
+                            <div class="criterion" id="uppercaseCriterion">
+                                <span class="criterion-icon">❌</span>
+                                <span class="criterion-text">Contains uppercase letter</span>
+                            </div>
+                            <div class="criterion" id="lowercaseCriterion">
+                                <span class="criterion-icon">❌</span>
+                                <span class="criterion-text">Contains lowercase letter</span>
+                            </div>
+                            <div class="criterion" id="numberCriterion">
+                                <span class="criterion-icon">❌</span>
+                                <span class="criterion-text">Contains number</span>
+                            </div>
+                            <div class="criterion" id="symbolCriterion">
+                                <span class="criterion-icon">❌</span>
+                                <span class="criterion-text">Contains special character</span>
+                            </div>
+                            <div class="criterion" id="lengthBonusCriterion">
+                                <span class="criterion-icon">❌</span>
+                                <span class="criterion-text">12+ characters (recommended)</span>
+                            </div>
+                        </div>
+
+                        <!-- Suggestions -->
+                        <div id="strengthSuggestions" class="suggestions">
+                            <h4>💡 Suggestions to improve:</h4>
+                            <ul id="suggestionsList"></ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Password History Section -->
+            <section class="history-section">
+                <div class="card">
+                    <h2>📝 Recent Passwords</h2>
+                    <div class="history-controls">
+                        <button id="clearHistoryButton" class="btn btn-danger">
+                            <span class="btn-icon">🗑️</span>
+                            <span class="btn-text">Clear History</span>
+                        </button>
+                        <span class="history-info">Passwords are stored locally on your device</span>
+                    </div>
+                    <div id="passwordHistory" class="password-history">
+                        <p class="no-history">No passwords generated yet</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ Section for SEO -->
+            <section class="faq-section">
+                <div class="card">
+                    <h2>❓ Frequently Asked Questions</h2>
+                    <div class="faq-list">
+                        <details class="faq-item">
+                            <summary>How secure are the generated passwords?</summary>
+                            <p>Our password generator uses cryptographically secure random number generation to create
+                                passwords. All generation happens locally in your browser - no passwords are sent to any
+                                server.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>What makes a strong password?</summary>
+                            <p>A strong password should be at least 12 characters long, include uppercase and lowercase
+                                letters, numbers, and special characters. Avoid common words, personal information, and
+                                predictable patterns.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>Are my passwords stored anywhere?</summary>
+                            <p>No passwords are stored on our servers. The recent passwords feature uses your browser's
+                                local storage, which means the data stays on your device and is not shared with anyone.
+                            </p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>How often should I change my passwords?</summary>
+                            <p>Change passwords immediately if you suspect they've been compromised. Otherwise, update
+                                important account passwords every 3-6 months, especially for financial and email
+                                accounts.</p>
+                        </details>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2025 Password Generator Tool. Built with security and privacy in mind.</p>
+                <p>🔒 All password generation happens locally in your browser. No data is transmitted to any server.</p>
+            </div>
+        </footer>
+
+        <!-- Toast Notifications -->
+        <div id="toast" class="toast"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="sw.js"></script>
+</body>
+
+</html>
